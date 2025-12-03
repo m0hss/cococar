@@ -1,0 +1,198 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .auth-container {
+    max-width: 450px;
+    margin: 3rem auto;
+  }
+
+  .auth-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .auth-header {
+    background: #1e3e62;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .auth-header h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.75rem;
+  }
+
+  .auth-header p {
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+
+  .auth-body {
+    padding: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 0.95rem;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #1e3e62;
+    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+    outline: none;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    background: #1e3e62;
+    border: none;
+    color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-login:hover {
+    transform: translateY(-2px);
+    background: #1e3e62;
+    color: #fef2f2;
+  }
+
+  .btn-login:active {
+    transform: translateY(0);
+  }
+
+  .auth-footer {
+    text-align: center;
+    padding: 1.5rem 2rem 2rem 2rem;
+    background: #f9fafb;
+    color: #6b7280;
+  }
+
+  .auth-footer a {
+    color: #1e3e62;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .auth-footer a:hover {
+    text-decoration: underline;
+  }
+
+  .error-message {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    color: #991b1b;
+  }
+
+  .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
+</style>
+
+<div class="auth-container">
+  <div class="auth-card card">
+    <div class="auth-header">
+      <div class="icon-wrapper">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+          <polyline points="10 17 15 12 10 7"></polyline>
+          <line x1="15" y1="12" x2="3" y2="12"></line>
+        </svg>
+      </div>
+      <h2>Welcome Back</h2>
+      <p>Login to access your carpool account</p>
+    </div>
+
+    <div class="auth-body">
+      {% if form.non_field_errors %}
+      <div class="error-message">
+        {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %} {% for field in form %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% if field.name == 'username' %}
+          <input
+            type="text"
+            name="{{ field.name }}"
+            id="{{ field.id_for_label }}"
+            class="form-control"
+            placeholder="Enter your username"
+            required
+          />
+          {% elif field.name == 'password' %}
+          <input
+            type="password"
+            name="{{ field.name }}"
+            id="{{ field.id_for_label }}"
+            class="form-control"
+            placeholder="Enter your password"
+            required
+          />
+          {% else %} {{ field }} {% endif %} {% if field.errors %}
+          <div class="text-danger mt-2">
+            {% for error in field.errors %}
+            <small>{{ error }}</small>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+
+        <button class="btn btn-login" type="submit">
+          <span>Login</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="auth-footer">
+      Don't have an account? <a href="/users/signup/">Create one</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

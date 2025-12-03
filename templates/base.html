@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Carpool</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <style>
+      body {
+        background: #f0f4f8;
+        min-height: 100vh;
+      }
+      
+      .modern-navbar {
+        background: #1E3E62;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+      }
+      
+      .modern-navbar .navbar-brand {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: white !important;
+        letter-spacing: -0.5px;
+        transition: transform 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      
+      .modern-navbar .navbar-brand:hover {
+        transform: scale(1.05);
+      }
+      
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+      }
+      
+      .modern-navbar .nav-link {
+        color: rgba(255, 255, 255, 0.85) !important;
+        font-weight: 500;
+        padding: 0.5rem 1rem !important;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin: 0 0.25rem;
+      }
+      
+      .modern-navbar .nav-link:hover {
+        color: white !important;
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+      }
+      
+      .modern-navbar .navbar-text {
+        color: white !important;
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        margin-right: 0.5rem;
+      }
+      
+      .modern-navbar .btn-logout {
+        color: rgba(255, 255, 255, 0.85) !important;
+        font-weight: 500;
+        padding: 0.5rem 1.25rem !important;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      .modern-navbar .btn-logout:hover {
+        color: white !important;
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+      
+      .navbar-toggler {
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+      
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.95)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg modern-navbar mb-4">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <span class="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+              <circle cx="7" cy="17" r="2"></circle>
+              <path d="M9 17h6"></path>
+              <circle cx="17" cy="17" r="2"></circle>
+            </svg>
+          </span>
+          Carpool
+        </a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/cars/add/">Cars</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/bookings/calendar/">Calendar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/cars/search/">Search</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+            <li
+              class="nav-item d-flex align-items-center justify-content-center"
+            >
+              <span
+                class="navbar-text me-2 d-flex align-items-center"
+                style="gap: 0.3em"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 32 32"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13s13-5.832 13-13S23.168 3 16 3m0 2c6.086 0 11 4.914 11 11s-4.914 11-11 11S5 22.086 5 16S9.914 5 16 5m0 3c-2.75 0-5 2.25-5 5c0 1.516.707 2.863 1.781 3.781A7 7 0 0 0 9 23h2c0-2.773 2.227-5 5-5s5 2.227 5 5h2c0-2.7-1.531-5.05-3.781-6.219C20.293 15.863 21 14.516 21 13c0-2.75-2.25-5-5-5m0 2c1.668 0 3 1.332 3 3s-1.332 3-3 3s-3-1.332-3-3s1.332-3 3-3"
+                  />
+                </svg>
+                Hi {{ user.username }}
+              </span>
+            </li>
+            <li class="nav-item">
+              <form
+                method="post"
+                action="/users/logout/"
+                style="display: inline"
+              >
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="nav-link btn btn-logout"
+                >
+                  Logout
+                </button>
+              </form>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="/users/login/">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/signup/">Register</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">{% block content %}{% endblock %}</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

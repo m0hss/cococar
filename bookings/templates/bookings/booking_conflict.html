@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="alert alert-danger">This car is already booked on {{ date }}. Please choose another date or car.</div>
+<a class="btn btn-secondary" href="/cars/{{ car.id }}/">Back</a>
+{% endblock %}

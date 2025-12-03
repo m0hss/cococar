@@ -1,0 +1,234 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .auth-container {
+    max-width: 450px;
+    margin: 3rem auto;
+  }
+
+  .auth-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .auth-header {
+    background: #1E3E62;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .auth-header h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.75rem;
+  }
+
+  .auth-header p {
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+  }
+
+  .auth-body {
+    padding: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 0.95rem;
+  }
+
+  .form-control {
+    border-radius: 10px;
+    border: 2px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+
+  .form-control:focus {
+    border-color: #1E3E62;
+    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+    outline: none;
+  }
+
+  .btn-signup {
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    background: #1E3E62;
+    border: none;
+    color: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-signup:hover {
+    transform: translateY(-2px);
+    background: #1E3E62;
+    color: #fef2f2
+  }
+
+  .btn-signup:active {
+    transform: translateY(0);
+  }
+
+  .auth-footer {
+    text-align: center;
+    padding: 1.5rem 2rem 2rem 2rem;
+    background: #f9fafb;
+    color: #6b7280;
+  }
+
+  .auth-footer a {
+    color: #1E3E62;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .auth-footer a:hover {
+    text-decoration: underline;
+  }
+
+  .help-text {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+  }
+
+  .help-text ul {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1.25rem;
+  }
+
+  .help-text li {
+    margin-bottom: 0.25rem;
+  }
+
+  .error-message {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    color: #991b1b;
+    font-size: 0.875rem;
+  }
+
+  .icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
+</style>
+
+<div class="auth-container">
+  <div class="auth-card card">
+    <div class="auth-header">
+      <div class="icon-wrapper">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+      </div>
+      <h2>Create Account</h2>
+      <p>Join our carpool community today</p>
+    </div>
+
+    <div class="auth-body">
+      <form method="post">
+        {% csrf_token %} {% for field in form %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+          {% if field.field.widget.input_type == 'password' %}
+          <input
+            type="password"
+            name="{{ field.name }}"
+            id="{{ field.id_for_label }}"
+            class="form-control"
+            placeholder="Enter {{ field.label|lower }}"
+            {%
+            if
+            field.field.required
+            %}required{%
+            endif
+            %}
+          />
+          {% elif field.field.widget.input_type == 'email' %}
+          <input
+            type="email"
+            name="{{ field.name }}"
+            id="{{ field.id_for_label }}"
+            class="form-control"
+            placeholder="Enter {{ field.label|lower }}"
+            {%
+            if
+            field.field.required
+            %}required{%
+            endif
+            %}
+          />
+          {% else %}
+          <input
+            type="text"
+            name="{{ field.name }}"
+            id="{{ field.id_for_label }}"
+            class="form-control"
+            placeholder="Enter {{ field.label|lower }}"
+            {%
+            if
+            field.field.required
+            %}required{%
+            endif
+            %}
+          />
+          {% endif %} {% if field.field.widget.input_type == 'password' %}
+          <div class="help-text">{{ field.help_text|safe }}</div>
+          {% endif %} {% if field.errors %} {% for error in field.errors %}
+          <div class="error-message">{{ error }}</div>
+          {% endfor %} {% endif %}
+        </div>
+        {% endfor %}
+
+        <button class="btn btn-signup" type="submit">
+          <span>Create Account</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="auth-footer">
+      Already have an account? <a href="/users/login/">Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
