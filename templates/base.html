@@ -91,10 +91,108 @@
       
       .navbar-toggler {
         border-color: rgba(255, 255, 255, 0.5);
+        padding: 0.5rem 0.75rem;
+      }
+      
+      .navbar-toggler:focus {
+        box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
       }
       
       .navbar-toggler-icon {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.95)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+      }
+      
+      .mobile-username {
+        display: none;
+      }
+      
+      .btn-login, .btn-register {
+        display: none;
+      }
+      
+      /* Mobile responsive styles */
+      @media (max-width: 991.98px) {
+        .modern-navbar .navbar-collapse {
+          margin-top: 1rem;
+          padding-top: 1rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modern-navbar .nav-link {
+          padding: 0.75rem 1rem !important;
+          margin: 0.25rem 0;
+        }
+        
+        .modern-navbar .navbar-text {
+          margin: 0 0 1rem 0;
+          display: block;
+          text-align: center;
+          font-size: 1.1rem;
+          background: rgba(255, 255, 255, 0.2);
+          padding: 1rem;
+          border-radius: 12px;
+        }
+        
+        .mobile-username {
+          display: block;
+        }
+        
+        .desktop-username {
+          display: none !important;
+        }
+        
+        .modern-navbar .btn-logout {
+          width: 100%;
+          margin-top: 0.5rem;
+        }
+        
+        .modern-navbar .navbar-nav {
+          width: 100%;
+        }
+        
+        /* Show login/register as buttons on mobile */
+        .btn-login, .btn-register {
+          display: block;
+          width: 100%;
+          padding: 0.75rem 1rem !important;
+          margin: 0.25rem 0;
+          text-align: center;
+          border-radius: 8px;
+          font-weight: 500;
+        }
+        
+        .btn-login {
+          background: rgba(255, 255, 255, 0.1);
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          color: white !important;
+        }
+        
+        .btn-login:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-register {
+          background: rgba(255, 255, 255, 0.95);
+          color: #1E3E62 !important;
+          border: 2px solid white;
+        }
+        
+        .btn-register:hover {
+          background: white;
+          transform: translateY(-2px);
+        }
+        
+        /* Hide regular nav-link styling for login/register on mobile */
+        .nav-item .nav-link.btn-login,
+        .nav-item .nav-link.btn-register {
+          background: rgba(255, 255, 255, 0.1);
+          border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-item .nav-link.btn-register {
+          background: rgba(255, 255, 255, 0.95);
+          color: #1E3E62 !important;
+        }
       }
     </style>
   </head>
@@ -112,7 +210,30 @@
           </span>
           Carpool
         </a>
-        <div class="collapse navbar-collapse">
+        <button 
+          class="navbar-toggler" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#navbarNav" 
+          aria-controls="navbarNav" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          {% if user.is_authenticated %}
+          <!-- Mobile username greeting (shown on mobile only) -->
+          <div class="mobile-username">
+            <span class="navbar-text d-flex align-items-center justify-content-center" style="gap: 0.5em">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+                <path fill="currentColor" d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13s13-5.832 13-13S23.168 3 16 3m0 2c6.086 0 11 4.914 11 11s-4.914 11-11 11S5 22.086 5 16S9.914 5 16 5m0 3c-2.75 0-5 2.25-5 5c0 1.516.707 2.863 1.781 3.781A7 7 0 0 0 9 23h2c0-2.773 2.227-5 5-5s5 2.227 5 5h2c0-2.7-1.531-5.05-3.781-6.219C20.293 15.863 21 14.516 21 13c0-2.75-2.25-5-5-5m0 2c1.668 0 3 1.332 3 3s-1.332 3-3 3s-3-1.332-3-3s1.332-3 3-3"/>
+              </svg>
+              Hi {{ user.username }}
+            </span>
+          </div>
+          {% endif %}
+          
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <a class="nav-link" href="/cars/add/">Cars</a>
@@ -126,48 +247,29 @@
           </ul>
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
-            <li
-              class="nav-item d-flex align-items-center justify-content-center"
-            >
-              <span
-                class="navbar-text me-2 d-flex align-items-center"
-                style="gap: 0.3em"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 32 32"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13s13-5.832 13-13S23.168 3 16 3m0 2c6.086 0 11 4.914 11 11s-4.914 11-11 11S5 22.086 5 16S9.914 5 16 5m0 3c-2.75 0-5 2.25-5 5c0 1.516.707 2.863 1.781 3.781A7 7 0 0 0 9 23h2c0-2.773 2.227-5 5-5s5 2.227 5 5h2c0-2.7-1.531-5.05-3.781-6.219C20.293 15.863 21 14.516 21 13c0-2.75-2.25-5-5-5m0 2c1.668 0 3 1.332 3 3s-1.332 3-3 3s-3-1.332-3-3s1.332-3 3-3"
-                  />
+            <!-- Desktop username (hidden on mobile) -->
+            <li class="nav-item d-flex align-items-center justify-content-center desktop-username">
+              <span class="navbar-text me-2 d-flex align-items-center" style="gap: 0.3em">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+                  <path fill="currentColor" d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13s13-5.832 13-13S23.168 3 16 3m0 2c6.086 0 11 4.914 11 11s-4.914 11-11 11S5 22.086 5 16S9.914 5 16 5m0 3c-2.75 0-5 2.25-5 5c0 1.516.707 2.863 1.781 3.781A7 7 0 0 0 9 23h2c0-2.773 2.227-5 5-5s5 2.227 5 5h2c0-2.7-1.531-5.05-3.781-6.219C20.293 15.863 21 14.516 21 13c0-2.75-2.25-5-5-5m0 2c1.668 0 3 1.332 3 3s-1.332 3-3 3s-3-1.332-3-3s1.332-3 3-3"/>
                 </svg>
                 Hi {{ user.username }}
               </span>
             </li>
             <li class="nav-item">
-              <form
-                method="post"
-                action="/users/logout/"
-                style="display: inline"
-              >
+              <form method="post" action="/users/logout/" style="display: inline">
                 {% csrf_token %}
-                <button
-                  type="submit"
-                  class="nav-link btn btn-logout"
-                >
+                <button type="submit" class="nav-link btn btn-logout">
                   Logout
                 </button>
               </form>
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="/users/login/">Login</a>
+              <a class="nav-link btn-login" href="/users/login/">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/users/signup/">Register</a>
+              <a class="nav-link btn-register" href="/users/signup/">Register</a>
             </li>
             {% endif %}
           </ul>
